@@ -18,6 +18,8 @@ namespace GGSkin
         public string CurrentPath;
         public string lolExe;
         public string LolExeRoot;
+        Version lolver;
+        Version locver;
 
         CFGFile GGSINI;
         FontSizeControl FSC;
@@ -44,6 +46,10 @@ namespace GGSkin
             beatk.Text = GGSINI.GetValue("Fonts", "beatk");
             cri.Text = GGSINI.GetValue("Fonts", "cri");
             lvup.Text = GGSINI.GetValue("Fonts", "lvup");
+
+            locver = new Version(GGSINI.GetValue("Version", "lol"));
+
+            //MessageBox.Show(GGSINI.GetValue("Version", "lol"));
         }
 
         private void lolBtn_Click(object sender, EventArgs e)
@@ -71,6 +77,7 @@ namespace GGSkin
             string sourceFile = System.IO.Path.Combine(this.CurrentPath, @"UI\" + UIname);
             int UIresult = 0;
             FileInfo UIFile = new FileInfo(sourceFile);
+            
 
             //判斷是否有面板檔
             if (!UIFile.Exists)
@@ -137,6 +144,18 @@ namespace GGSkin
                 return;
             }
 
+            //遊戲版本檢查
+            StreamReader sr = new StreamReader(targetFolder + @"\client.ver", Encoding.Default);
+
+            string get_ver = sr.ReadLine().ToString();
+            lolver = new Version(get_ver);
+
+            if (locver.CompareTo(lolver) < 0)
+            {
+                this.zip_handle(targetFile, sourceFile, get_ver);
+                //MessageBox.Show("版本過舊，無法更新");
+            }
+
             //依文件編號判斷
             switch (DocNo)
             {
@@ -200,6 +219,39 @@ namespace GGSkin
             }
 
             MessageBox.Show("面板套用成功!");
+        }
+
+        //
+        private void zip_handle(string sourceFile, string targetFile, string lolcode)
+        {
+            string f_default;
+            string f_gg;
+            
+            f_default = targetFile + @"zDoc\Default.TXT";
+            f_gg = targetFile + @"zDoc\GGSkin.TXT";
+
+            FileInfo fi = new FileInfo(sourceFile);
+
+            
+            //檔案複製
+            try
+            {
+                fi.CopyTo(f_default, true);
+                fi.CopyTo(f_gg, true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("無法複製檔案");
+                return;
+            }
+
+            using (StreamWriter sw = File.AppendText(f_gg))
+            {
+                sw.WriteLine("GGSkin.zip");
+            }
+
+            GGSINI.SetValue("Version", "lol", lolcode);
         }
 
         //原廠
