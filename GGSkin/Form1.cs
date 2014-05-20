@@ -17,12 +17,10 @@ namespace GGSkin
     {
         public string CurrentPath;
         public string lolExe;
+        CFGFile GGSINI;
         public string LolExeRoot;
         Version lolver;
         Version locver;
-
-        CFGFile GGSINI;
-        FontSizeControl FSC;
 
         public GGSkin()
         {
@@ -33,7 +31,16 @@ namespace GGSkin
 
         private void GGSkin_Load(object sender, EventArgs e)
         {
-            GGSINI = new CFGFile(Directory.GetCurrentDirectory() + "\\config\\GGSkin.ini");
+            string INIdoc = Directory.GetCurrentDirectory() + @"\config\GGSkin.ini";
+
+            if (!File.Exists(INIdoc))
+            {
+                MessageBox.Show("GGSKin設定檔遺失");
+                Application.Exit();
+                return;
+            }
+
+            GGSINI = new CFGFile(INIdoc);
             LolExeRoot = GGSINI.GetValue("Init", "Lolpath");
 
             if (!String.IsNullOrEmpty(LolExeRoot))
@@ -48,8 +55,22 @@ namespace GGSkin
             lvup.Text = GGSINI.GetValue("Fonts", "lvup");
 
             locver = new Version(GGSINI.GetValue("Version", "lol"));
+        }
 
-            //MessageBox.Show(GGSINI.GetValue("Version", "lol"));
+        public string _output_status(int status_code)
+        {
+            string[] status_info = { 
+                                       "面板套用成功!", 
+                                       "遺失UI檔案", 
+                                       "未設定LOL目錄!", 
+                                       "資料夾未存在!", 
+                                       "不正確的LOL目錄!", 
+                                       "程式執行異常",
+                                       "檔案文件遺失",
+                                       "無法複製檔案"
+                                   };
+
+            return status_info[status_code];
         }
 
         private void lolBtn_Click(object sender, EventArgs e)
@@ -77,46 +98,50 @@ namespace GGSkin
             string sourceFile = System.IO.Path.Combine(this.CurrentPath, @"UI\" + UIname);
             int UIresult = 0;
             FileInfo UIFile = new FileInfo(sourceFile);
-            
+
+            //MessageBox.Show(sourceFile);
+            //Environment.Exit(Environment.ExitCode);
 
             //判斷是否有面板檔
             if (!UIFile.Exists)
             {
                 Console.WriteLine(this.CurrentPath + UIname);
                 UIresult = 1;
-
             }
 
             //判斷LOL路徑是否為空
-            if (String.IsNullOrEmpty(lolFolder.Text))
+            else if (String.IsNullOrEmpty(lolFolder.Text))
             {
                 Console.WriteLine("未設定LOL目錄!");
                 UIresult = 2;
             }
 
             //判斷資料夾存在
-            if (!Directory.Exists(lolFolder.Text))
+            else if (!Directory.Exists(lolFolder.Text))
             {
                 Console.WriteLine("資料夾未存在!");
                 UIresult = 3;
             }
 
             //判斷是否為LOL執行檔目錄下
-            if (!File.Exists(System.IO.Path.Combine(targetFolder, this.lolExe)))
+            else if (!File.Exists(System.IO.Path.Combine(targetFolder, this.lolExe)))
             {
                 Console.WriteLine("不正確的LOL目錄!");
                 UIresult = 4;
             }
 
             //檔案複製
-            try
+            else
             {
-                UIFile.CopyTo(targetFile, true);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                UIresult = 5;
+                try
+                {
+                    UIFile.CopyTo(targetFile, true);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    UIresult = 5;
+                }
             }
 
             return UIresult;
@@ -140,7 +165,7 @@ namespace GGSkin
             if (UIcode != 0)
             {
                 Console.WriteLine(UIcode);
-                MessageBox.Show("面板套用失敗!");
+                MessageBox.Show("面板套用失敗: " + this._output_status(UIcode));
                 return;
             }
 
@@ -153,7 +178,6 @@ namespace GGSkin
             if (locver.CompareTo(lolver) < 0)
             {
                 this.zip_handle(targetFile, sourceFile, get_ver);
-                //MessageBox.Show("版本過舊，無法更新");
             }
 
             //依文件編號判斷
@@ -177,62 +201,40 @@ namespace GGSkin
             //判斷zDoc是否有檔
             if (!lolCZ.Exists)
             {
-                Console.WriteLine(sourceFile);
                 Console.WriteLine("zDoc資料夾內無源檔");
-                MessageBox.Show("面板套用失敗!");
-                return;
-            }
-
-            //判斷LOL路徑是否為空
-            if (String.IsNullOrEmpty(lolFolder.Text))
-            {
-                Console.WriteLine("未設定LOL目錄!");
-                MessageBox.Show("未設定LOL目錄!");
-                return;
-            }
-
-            //判斷資料夾存在
-            if (!Directory.Exists(lolFolder.Text))
-            {
-                MessageBox.Show("資料夾未存在!");
-                return;
-            }
-
-            //判斷是否為LOL執行檔目錄下
-            if (!File.Exists(System.IO.Path.Combine(targetFolder, this.lolExe)))
-            {
-                MessageBox.Show("不正確的LOL目錄!");
+                MessageBox.Show("面板套用失敗: " + this._output_status(6));
                 return;
             }
 
             //檔案複製
-            try
+            else
             {
-                lolCZ.CopyTo(targetFile, true);
+                try
+                {
+                    lolCZ.CopyTo(targetFile, true);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("無法複製檔案");
+                    MessageBox.Show("面板套用失敗:" + this._output_status(7));
+                    return;
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine("無法複製檔案");
-                MessageBox.Show("面板套用失敗!");
-                return;
-            }
-
-            MessageBox.Show("面板套用成功!");
+            MessageBox.Show(this._output_status(0));
         }
 
-        //
+        //zDoc文件處理
         private void zip_handle(string sourceFile, string targetFile, string lolcode)
         {
             string f_default;
             string f_gg;
-            
+
             f_default = targetFile + @"zDoc\Default.TXT";
             f_gg = targetFile + @"zDoc\GGSkin.TXT";
 
             FileInfo fi = new FileInfo(sourceFile);
 
-            
+
             //檔案複製
             try
             {

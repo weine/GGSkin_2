@@ -33,9 +33,6 @@
             this.lolFolder = new System.Windows.Forms.TextBox();
             this.lolBtn = new System.Windows.Forms.Button();
             this.tipLb01 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.lolSkinDef = new System.Windows.Forms.Button();
             this.lolSkinFoxe = new System.Windows.Forms.Button();
             this.lolSkinPeb = new System.Windows.Forms.Button();
@@ -60,6 +57,9 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.fontBtn6 = new System.Windows.Forms.Button();
+            this.sUI_gp = new System.Windows.Forms.GroupBox();
+            this.sfontSize_gp = new System.Windows.Forms.GroupBox();
+            this.sfontStyle_gp = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -100,33 +100,6 @@
             this.tipLb01.TabIndex = 3;
             this.tipLb01.Text = "(如不是安裝在預設目錄下，請選擇LOL執行檔所在的資料夾)";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(34, 99);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 12);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "【面板選擇】";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(193, 99);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 12);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "【字體大小】";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(346, 99);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 12);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "【字型變更】";
-            // 
             // lolSkinDef
             // 
             this.lolSkinDef.Location = new System.Drawing.Point(76, 124);
@@ -155,7 +128,6 @@
             this.lolSkinPeb.TabIndex = 9;
             this.lolSkinPeb.Text = "PebUI";
             this.lolSkinPeb.UseVisualStyleBackColor = true;
-            this.lolSkinPeb.Visible = false;
             this.lolSkinPeb.Click += new System.EventHandler(this.lolSkinPeb_Click);
             // 
             // lolSkinDean
@@ -166,7 +138,6 @@
             this.lolSkinDean.TabIndex = 10;
             this.lolSkinDean.Text = "DeanUI";
             this.lolSkinDean.UseVisualStyleBackColor = true;
-            this.lolSkinDean.Visible = false;
             this.lolSkinDean.Click += new System.EventHandler(this.lolSkinDean_Click);
             // 
             // lolSkinHero
@@ -177,7 +148,6 @@
             this.lolSkinHero.TabIndex = 11;
             this.lolSkinHero.Text = "D-HeroUI";
             this.lolSkinHero.UseVisualStyleBackColor = true;
-            this.lolSkinHero.Visible = false;
             this.lolSkinHero.Click += new System.EventHandler(this.lolSkinHero_Click);
             // 
             // gold
@@ -358,6 +328,33 @@
             this.fontBtn6.UseVisualStyleBackColor = true;
             this.fontBtn6.Click += new System.EventHandler(this.fontBtn6_Click);
             // 
+            // sUI_gp
+            // 
+            this.sUI_gp.Location = new System.Drawing.Point(43, 99);
+            this.sUI_gp.Name = "sUI_gp";
+            this.sUI_gp.Size = new System.Drawing.Size(126, 224);
+            this.sUI_gp.TabIndex = 30;
+            this.sUI_gp.TabStop = false;
+            this.sUI_gp.Text = "【面板選擇】";
+            // 
+            // sfontSize_gp
+            // 
+            this.sfontSize_gp.Location = new System.Drawing.Point(185, 99);
+            this.sfontSize_gp.Name = "sfontSize_gp";
+            this.sfontSize_gp.Size = new System.Drawing.Size(139, 224);
+            this.sfontSize_gp.TabIndex = 31;
+            this.sfontSize_gp.TabStop = false;
+            this.sfontSize_gp.Text = "【字體大小】";
+            // 
+            // sfontStyle_gp
+            // 
+            this.sfontStyle_gp.Location = new System.Drawing.Point(343, 99);
+            this.sfontStyle_gp.Name = "sfontStyle_gp";
+            this.sfontStyle_gp.Size = new System.Drawing.Size(136, 224);
+            this.sfontStyle_gp.TabIndex = 32;
+            this.sfontStyle_gp.TabStop = false;
+            this.sfontStyle_gp.Text = "【字型變更】";
+            // 
             // GGSkin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -387,13 +384,13 @@
             this.Controls.Add(this.lolSkinPeb);
             this.Controls.Add(this.lolSkinFoxe);
             this.Controls.Add(this.lolSkinDef);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.tipLb01);
             this.Controls.Add(this.lolBtn);
             this.Controls.Add(this.lolFolder);
             this.Controls.Add(this.lolDirLb);
+            this.Controls.Add(this.sUI_gp);
+            this.Controls.Add(this.sfontSize_gp);
+            this.Controls.Add(this.sfontStyle_gp);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GGSkin";
             this.Text = "GGSkin";
@@ -411,9 +408,6 @@
         private System.Windows.Forms.TextBox lolFolder;
         private System.Windows.Forms.Button lolBtn;
         private System.Windows.Forms.Label tipLb01;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button lolSkinDef;
         private System.Windows.Forms.Button lolSkinFoxe;
         private System.Windows.Forms.Button lolSkinPeb;
@@ -438,6 +432,9 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Button fontBtn6;
+        private System.Windows.Forms.GroupBox sUI_gp;
+        private System.Windows.Forms.GroupBox sfontSize_gp;
+        private System.Windows.Forms.GroupBox sfontStyle_gp;
     }
 }
 
